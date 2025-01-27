@@ -7,7 +7,8 @@ import { Button } from 'antd';
 import { useNavbarHooks } from './hooks';
 const Navbar: NextPage = () => {
   const { pathname } = useRouter();
-  const { handleGotoEdit } = useNavbarHooks();
+  const { state, handleGotoEdit } = useNavbarHooks();
+  const { searchValue } = state;
   return (
     <div className={styles.navbar}>
       <section className={styles.logArea}>BLOG-C</section>
