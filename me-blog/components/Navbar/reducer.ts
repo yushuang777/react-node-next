@@ -1,57 +1,55 @@
-
-
 interface State {
-  searchValue: string
-  currentTab: string
+  loginModal: boolean;
+  currentTab: string;
 }
 
-type Action = CustomActions<State>
+type Action = CustomActions<State>;
 
 export const initialState: State = {
-  searchValue: 'test',
-  currentTab: '全选',
-}
+  loginModal: false,
+  currentTab: "全选",
+};
 
 export function reducer(state: State = initialState, action: Action): State {
-  const newstate = { ...state }
+  const newstate = { ...state };
   switch (action.type) {
-    case 'setSearchValueAction':
-      newstate.searchValue = action.payload
-      return newstate
-    case 'setCurrentTabAction':
-      newstate.currentTab = action.payload
-      return newstate
-    case 'resetStateAction':
-      return initialState
+    case "setLoginModalAction":
+      newstate.loginModal = action.payload;
+      return newstate;
+    case "setCurrentTabAction":
+      newstate.currentTab = action.payload;
+      return newstate;
+    case "resetStateAction":
+      return initialState;
     default:
-      throw new Error('action not match')
+      throw new Error("action not match");
   }
 }
 
 export const actions: ActionFunctions<State> = {
-  setSearchValueAction: function (
-    val: string,
-  ): CustomActionFromKeyState<'setSearchValueAction', State> {
+  setLoginModalAction: function (
+    val: boolean
+  ): CustomActionFromKeyState<"setLoginModalAction", State> {
     return {
-      type: 'setSearchValueAction',
+      type: "setLoginModalAction",
       payload: val,
-    }
+    };
   },
   setCurrentTabAction: function (
-    val: string,
-  ): CustomActionFromKeyState<'setCurrentTabAction', State> {
+    val: string
+  ): CustomActionFromKeyState<"setCurrentTabAction", State> {
     return {
-      type: 'setCurrentTabAction',
+      type: "setCurrentTabAction",
       payload: val,
-    }
+    };
   },
   resetStateAction: function (): CustomActionFromKeyState<
-    'resetStateAction',
+    "resetStateAction",
     State
   > {
     return {
-      type: 'resetStateAction',
+      type: "resetStateAction",
       payload: undefined,
-    }
+    };
   },
-}
+};

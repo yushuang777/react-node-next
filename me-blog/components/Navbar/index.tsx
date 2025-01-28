@@ -3,12 +3,20 @@ import { navs } from './config';
 import styles from './index.module.scss';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Button } from 'antd';
+import { Button, Form, Modal } from 'antd';
 import { useNavbarHooks } from './hooks';
+import LoginModal from 'components/loginModal';
 const Navbar: NextPage = () => {
   const { pathname } = useRouter();
-  const { state, handleGotoEdit } = useNavbarHooks();
-  const { searchValue } = state;
+  const {
+    state,
+    loginForm,
+    handleGotoEdit,
+    handleGotoLogin,
+    handleOk,
+    handleCancel,
+  } = useNavbarHooks();
+  const { loginModal } = state;
   return (
     <div className={styles.navbar}>
       <section className={styles.logArea}>BLOG-C</section>
@@ -28,11 +36,23 @@ const Navbar: NextPage = () => {
         })}
       </section>
       <div className={styles.operatiobnArea}>
-        <Button type="primary" onClick={handleGotoEdit}>
+        <Button
+          type="primary"
+          onClick={handleGotoEdit}
+          style={{ marginRight: '20px' }}
+        >
           写文章
         </Button>
-        <Button type="primary">登录</Button>
+        <Button type="primary" onClick={handleGotoLogin}>
+          登录
+        </Button>
       </div>
+      <LoginModal
+        form={loginForm}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        loginModal={loginModal}
+      />
     </div>
   );
 };

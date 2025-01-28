@@ -1,0 +1,77 @@
+import { Button, Checkbox, Col, Form, Input, Modal, Row } from 'antd';
+import React from 'react';
+import { useLoginHooks } from './hooks';
+import CountTime from 'components/CountTime';
+interface Props {
+  handleOk: () => void;
+  handleCancel: () => void;
+  loginModal: boolean;
+  form: any;
+}
+
+function index(props: Props) {
+  const { handleOk, handleCancel, loginModal, form } = props;
+  const { state, getVcCode, onEnd } = useLoginHooks();
+  const { countTime, isShowCountTime } = state;
+  return (
+    <div>
+      <Modal
+        title="登录弹窗"
+        onOk={handleOk}
+        onCancel={handleCancel}
+        open={loginModal}
+        cancelText={'关闭'}
+        okText={'登录'}
+      >
+        <Form form={form} autoComplete="off" wrapperCol={{ span: 16 }}>
+          <Form.Item
+            label="账号"
+            name="account"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="密码"
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item label="验证码">
+            <Row gutter={8}>
+              <Col span={12}>
+                <Form.Item
+                  name="vcCode"
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: '请输入验证码！',
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button onClick={getVcCode}>
+                  {isShowCountTime ? (
+                    <CountTime time={countTime} onEnd={onEnd} />
+                  ) : (
+                    '获取验证码'
+                  )}
+                </Button>
+              </Col>
+            </Row>
+          </Form.Item>
+        </Form>
+        <span style={{ color: 'blue' }}>使用Github登录</span>
+      </Modal>
+    </div>
+  );
+}
+
+export default index;
