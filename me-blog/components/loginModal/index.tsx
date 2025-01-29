@@ -11,7 +11,7 @@ interface Props {
 
 function index(props: Props) {
   const { handleOk, handleCancel, loginModal, form } = props;
-  const { state, getVcCode, onEnd } = useLoginHooks();
+  const { state, getVcCode, onEnd } = useLoginHooks(props);
   const { countTime, isShowCountTime } = state;
   return (
     <div>
@@ -23,21 +23,18 @@ function index(props: Props) {
         cancelText={'关闭'}
         okText={'登录'}
       >
-        <Form form={form} autoComplete="off" wrapperCol={{ span: 16 }}>
+        <Form
+          form={form}
+          autoComplete="off"
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 16 }}
+        >
           <Form.Item
-            label="账号"
-            name="account"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            label="手机号"
+            name="phoneNumber"
+            rules={[{ required: true }]}
           >
             <Input />
-          </Form.Item>
-
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-          >
-            <Input.Password />
           </Form.Item>
 
           <Form.Item label="验证码">
@@ -57,18 +54,16 @@ function index(props: Props) {
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Button onClick={getVcCode}>
-                  {isShowCountTime ? (
-                    <CountTime time={countTime} onEnd={onEnd} />
-                  ) : (
-                    '获取验证码'
-                  )}
-                </Button>
+                {isShowCountTime ? (
+                  <CountTime time={countTime} onEnd={onEnd} />
+                ) : (
+                  <Button onClick={getVcCode}>获取验证码</Button>
+                )}
               </Col>
             </Row>
           </Form.Item>
         </Form>
-        <span style={{ color: 'blue' }}>使用Github登录</span>
+        <span style={{ color: 'blue', cursor: 'pointer' }}>使用Github登录</span>
       </Modal>
     </div>
   );
