@@ -3,10 +3,13 @@ import { encode } from 'js-base64';
 import { NextApiRequest, NextApiResponse } from 'next';
 import request from 'service/fetch';
 import { format } from 'date-fns';
-export default async function sendVerifyCode(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+import { withIronSessionApiRoute } from 'iron-session/next';
+import { ironOptions } from 'config';
+import { ISession } from './index';
+
+export default withIronSessionApiRoute(sendVerifyCode,  ironOptions );
+async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) {
+  const session: ISession = req.session;
   const { to = '', templateId = '1' } = req.body;
   const AppId = '2c94811c946f6bfb0194b28b254d0562';
   const AccountId = '2c94811c946f6bfb0194b28b23a1055b';
@@ -28,9 +31,22 @@ export default async function sendVerifyCode(
     { headers: { Authorization } }
   );
 
-  console.log(response);
-  res.status(200).json({
-    code: 0,
-    data: 123,
-  });
+  console.log(response)
+  const { statusCode, templateSMS,statusMsg } = response as any;
+  if (statusCode === '000000') {
+    session.verifyCode = verifyCode;
+    await session.save();
+    res.status(200).json({
+      code: statusCode,
+      msg: statusMsg,
+      data:{
+        templateSMS
+      }
+    });
+  }else{
+    res.status(200).json({
+      code: statusCode,
+      msg: statusMsg,
+    });
+  }
 }
