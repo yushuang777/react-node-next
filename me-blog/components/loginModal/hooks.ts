@@ -16,10 +16,8 @@ export function useLoginHooks(props: Props) {
       request
         .post('/api/user/sendVerifyCode', { to: phone, template: 1 })
         .then((res: any) => {
-          console.log(res);
           if (res?.code === '000000') {
             dispatch(actions.setIsShowCountTimeAction(true));
-            console.log(res);
           } else {
             message.warn(res.msg);
           }
